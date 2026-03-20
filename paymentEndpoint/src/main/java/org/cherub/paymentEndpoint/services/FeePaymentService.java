@@ -24,20 +24,17 @@ public class FeePaymentService {
         this.feePaymentRepository = feePaymentRepository;
     }
 
-
     public FeePayment processPayment(FeePaymentDto paymentDto){
        BigDecimal incentiveRate,incentiveAmount,totalReductionAmount,newBalance,finalBalance;
        StudentAccount studentAccount = studentAccountRepository.findByStudentNumber(paymentDto.getStudentNumber()).orElseThrow(() -> new RuntimeException("Student Not Found!"));
        List<FeePayment> payments = feePaymentRepository.findByStudentNumber(studentAccount.getStudentNumber());
        boolean isFirstPayment = payments.isEmpty();
 
-
        incentiveRate = determineIncentiveRate(paymentDto.getPaymentAmount(),isFirstPayment);
        incentiveAmount = paymentDto.getPaymentAmount().multiply(incentiveRate);
        totalReductionAmount = paymentDto.getPaymentAmount().add(incentiveAmount);
        newBalance = isFirstPayment ? studentAccount.getInitialBalance().subtract(totalReductionAmount) : studentAccount.getCurrentBalance().subtract(totalReductionAmount);
        finalBalance = newBalance.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newBalance;
-       System.out.println("data: "+ newBalance +" final: "+ finalBalance);
 
        if(paymentDto.getPaymentAmount().compareTo(studentAccount.getInitialBalance()) > 0) {
         throw new IllegalArgumentException("Payment Amount has exceeded initial balance!");

@@ -54,18 +54,10 @@ public class FeePaymentIntegrationTests {
         void processPaymentShouldApplyIncentiveAndUpdateBalance() {
 
             StudentAccount studentAccount = studentAccountRepository.findByStudentNumber("STUD000004").orElseThrow();
-//            studentAccount.setStudentNumber("STUD000004");
-//            studentAccount.setInitialBalance(new BigDecimal("800000"));
-//            studentAccount.setCurrentBalance(new BigDecimal("800000"));
-//            studentAccountRepository.saveAndFlush(studentAccount);
 
             FeePaymentDto paymentDto = new FeePaymentDto("STUD000004", new BigDecimal("100000"));
 
             FeePayment payment = feePaymentService.processPayment(paymentDto);
-            List<FeePayment> payments = feePaymentRepository.findAll();
-
-            System.out.println("[Payments]:" + payments);
-
 
             assertNotNull(payment);
             assertEquals(new BigDecimal("0.03"), payment.getIncentiveRate());
@@ -83,11 +75,6 @@ public class FeePaymentIntegrationTests {
         void processPaymentShouldSetNextDueDateToNoneWhenBalanceIsZero() {
 
             StudentAccount studentAccount = studentAccountRepository.findByStudentNumber("STUD000005").orElseThrow();
-//            studentAccount.setStudentNumber("STUD000005");
-//            studentAccount.setInitialBalance(new BigDecimal("800000"));
-//            studentAccount.setCurrentBalance(new BigDecimal("800000"));
-//            System.out.println("+++++++++++++   " + studentAccount);
-//            studentAccountRepository.saveAndFlush(studentAccount);
 
             FeePaymentDto paymentDto = new FeePaymentDto("STUD000005", new BigDecimal("800000"));
             FeePayment payment = feePaymentService.processPayment(paymentDto);
@@ -95,10 +82,6 @@ public class FeePaymentIntegrationTests {
             assertNotNull(payment);
             assertEquals("None", payment.getNextPaymentDueDate());
             StudentAccount updatedAccount = studentAccountRepository.findByStudentNumber("STUD000005").orElseThrow();
-            List<StudentAccount> accounts = studentAccountRepository.findAll();
-
-            System.out.println("[Students]:" + accounts);
-
             assertEquals("None", updatedAccount.getNextDueDate());
         }
 }
