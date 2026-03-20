@@ -36,17 +36,17 @@ public class FeePaymentService {
        newBalance = isFirstPayment ? studentAccount.getInitialBalance().subtract(totalReductionAmount) : studentAccount.getCurrentBalance().subtract(totalReductionAmount);
        finalBalance = newBalance.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : newBalance;
 
-       if(paymentDto.getPaymentAmount().compareTo(studentAccount.getInitialBalance()) > 0) {
-        throw new IllegalArgumentException("Payment Amount has exceeded initial balance!");
-       }
+        if(paymentDto.getPaymentAmount().compareTo(studentAccount.getInitialBalance()) > 0) {
+            throw new IllegalArgumentException("Invalid payment: amount exceeds initial balance");
+        }
 
-       if(!isFirstPayment && paymentDto.getPaymentAmount().compareTo(finalBalance)  > 0) {
-            throw new IllegalArgumentException("Payment Amount has exceeded previous balance!");
-       }
+        if(!isFirstPayment && paymentDto.getPaymentAmount().compareTo(finalBalance)  > 0) {
+            throw new IllegalArgumentException("Payment denied: amount exceeds remaining balance");
+        }
 
-       if (!isFirstPayment && finalBalance.compareTo(BigDecimal.ZERO) <= 0){
-            throw new IllegalStateException("Payments cannot be accepted when student balance is 0");
-       }
+        if (!isFirstPayment && finalBalance.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalStateException("Cannot accept payment: student balance is settled");
+        }
 
         // create new payment record
        FeePayment feePayment = new FeePayment();
