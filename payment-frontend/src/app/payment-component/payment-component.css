@@ -1,0 +1,52 @@
+
+
+div.main{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+}
+
+form{
+     border:1px solid black;
+    width: 400px;
+    border-radius: 10px;
+    height: 200px;
+    padding: 10px;
+
+}
+
+input{
+    padding:10px;
+    border-radius: 5px;
+    margin: 10px;
+    flex:1;
+    
+}
+
+.form-row{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-row{
+    justify-content: center;
+
+}
+ label{
+    width: 120px;
+    text-align: right;
+ }
+
+button{
+    background-color: #22A7F2;
+    color:white;
+    width: 100px;
+    text-align: center;
+    border:none;
+    border-radius: 5px;
+    padding:10px;
+   
+}
+

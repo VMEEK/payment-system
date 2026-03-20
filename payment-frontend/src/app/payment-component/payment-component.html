@@ -1,0 +1,15 @@
+<div class="main">
+    <form action="" (ngSubmit)="processPayment()" #paymentForm="ngForm">
+        <div class="form-row">
+            <label for="studentId">Student Number</label>
+            <input type="text" name="studentNumber" placeholder="Enter student number" [(ngModel)]="paymentData.studentNumber" required> 
+        </div> 
+        <div class="form-row">
+            <label for="amount">Payment Amount</label>
+            <input type="number" name="paymentAmount" placeholder="Enter payment amount" [(ngModel)]="paymentData.paymentAmount" required>
+        </div>
+        <div class="form-row button-row">
+            <button type="submit" [disabled]="paymentForm.invalid">pay</button>
+        </div>
+    </form>
+</div>
